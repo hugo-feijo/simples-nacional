@@ -23,10 +23,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import exception.FormatDataException;
-import model.entity.Anexo;
-import model.entity.Anexo_I;
-import model.entity.Anexo_IV;
 import model.entity.Nota;
+import model.entity.anexo.Anexo;
+import model.entity.anexo.Anexo_I;
+import model.entity.anexo.Anexo_II;
+import model.entity.anexo.Anexo_III;
+import model.entity.anexo.Anexo_IV;
+import model.entity.anexo.Anexo_V;
 import model.entity.enums.Siglas;
 
 @ExtendWith(MockitoExtension.class)
@@ -136,27 +139,110 @@ class ReadCsvFileTest {
 		assertEquals(notas.get(3).getValor(), 768.22);
 	}
 	
-	@Test
-	@DisplayName("Seta corretamento o anexo")
-	void test_dadosCsvParaAnexoCorretamente() throws FileNotFoundException {
-		Anexo anexoI = new Anexo_I();
-		assertEquals(4.0, anexoI.faixa_1.get(Siglas.ALIQ));
-		assertEquals(7.3, anexoI.faixa_2.get(Siglas.ALIQ));
-		assertEquals(19.0, anexoI.faixa_6.get(Siglas.ALIQ));
+	@Nested
+	@DisplayName("setar corretamente o")
+	class setAnexos {
 		
-		assertEquals(5940.00, anexoI.faixa_2.get(Siglas.VD));
-		assertEquals(13860.00, anexoI.faixa_3.get(Siglas.VD));
-		assertEquals(378000.00, anexoI.faixa_6.get(Siglas.VD));
+		@Test
+		@DisplayName("anexo I")
+		void test_anexoI() throws FileNotFoundException {
+			Anexo anexoI = new Anexo_I();
+			assertEquals(4.00, anexoI.faixa_1.get(Siglas.ALIQ));
+			assertEquals(7.30, anexoI.faixa_2.get(Siglas.ALIQ));
+			assertEquals(9.50, anexoI.faixa_3.get(Siglas.ALIQ));
+			assertEquals(10.70, anexoI.faixa_4.get(Siglas.ALIQ));
+			assertEquals(14.30, anexoI.faixa_5.get(Siglas.ALIQ));
+			assertEquals(19.0, anexoI.faixa_6.get(Siglas.ALIQ));
+			
+			assertEquals(0.00, anexoI.faixa_1.get(Siglas.VD));
+			assertEquals(5940.00, anexoI.faixa_2.get(Siglas.VD));
+			assertEquals(13860.00, anexoI.faixa_3.get(Siglas.VD));
+			assertEquals(22500.00, anexoI.faixa_4.get(Siglas.VD));
+			assertEquals(87300.00, anexoI.faixa_5.get(Siglas.VD));
+			assertEquals(378000.00, anexoI.faixa_6.get(Siglas.VD));
+			
+		}
 
-		Anexo anexoIV = new Anexo_IV();
-		assertEquals(4.50, anexoIV.faixa_1.get(Siglas.ALIQ));
-		assertEquals(9.00, anexoIV.faixa_2.get(Siglas.ALIQ));
-		assertEquals(33.00, anexoIV.faixa_6.get(Siglas.ALIQ));
+		@Test
+		@DisplayName("anexo II")
+		void test_anexoII() throws FileNotFoundException {
+			Anexo anexoII = new Anexo_II();
+			assertEquals(4.50, anexoII.faixa_1.get(Siglas.ALIQ));
+			assertEquals(7.80, anexoII.faixa_2.get(Siglas.ALIQ));
+			assertEquals(10.00, anexoII.faixa_3.get(Siglas.ALIQ));
+			assertEquals(11.20, anexoII.faixa_4.get(Siglas.ALIQ));
+			assertEquals(14.70, anexoII.faixa_5.get(Siglas.ALIQ));
+			assertEquals(30.00, anexoII.faixa_6.get(Siglas.ALIQ));
+			
+			assertEquals(0.00, anexoII.faixa_1.get(Siglas.VD));
+			assertEquals(5940.00, anexoII.faixa_2.get(Siglas.VD));
+			assertEquals(13860.00, anexoII.faixa_3.get(Siglas.VD));
+			assertEquals(22500.00, anexoII.faixa_4.get(Siglas.VD));
+			assertEquals(85500.00, anexoII.faixa_5.get(Siglas.VD));
+			assertEquals(720000.00, anexoII.faixa_6.get(Siglas.VD));
+			
+		}
 		
-		assertEquals(8100.00, anexoIV.faixa_2.get(Siglas.VD));
-		assertEquals(12420.00, anexoIV.faixa_3.get(Siglas.VD));
-		assertEquals(828000.00, anexoIV.faixa_6.get(Siglas.VD));
+		@Test
+		@DisplayName("anexo III")
+		void test_anexoIII() throws FileNotFoundException {
+			Anexo anexoIII = new Anexo_III();
+			assertEquals(6.00, anexoIII.faixa_1.get(Siglas.ALIQ));
+			assertEquals(11.20, anexoIII.faixa_2.get(Siglas.ALIQ));
+			assertEquals(13.50, anexoIII.faixa_3.get(Siglas.ALIQ));
+			assertEquals(16.00, anexoIII.faixa_4.get(Siglas.ALIQ));
+			assertEquals(21.00, anexoIII.faixa_5.get(Siglas.ALIQ));
+			assertEquals(33.00, anexoIII.faixa_6.get(Siglas.ALIQ));
+			
+			assertEquals(0.00, anexoIII.faixa_1.get(Siglas.VD));
+			assertEquals(9360.00, anexoIII.faixa_2.get(Siglas.VD));
+			assertEquals(17640.00, anexoIII.faixa_3.get(Siglas.VD));
+			assertEquals(35640.00, anexoIII.faixa_4.get(Siglas.VD));
+			assertEquals(125640.00, anexoIII.faixa_5.get(Siglas.VD));
+			assertEquals(648000.00, anexoIII.faixa_6.get(Siglas.VD));
+			
+		}
+
+		@Test
+		@DisplayName("anexo IV")
+		void test_anexoIV() throws FileNotFoundException {
+			Anexo anexoIV = new Anexo_IV();
+			assertEquals(4.50, anexoIV.faixa_1.get(Siglas.ALIQ));
+			assertEquals(9.00, anexoIV.faixa_2.get(Siglas.ALIQ));
+			assertEquals(10.20, anexoIV.faixa_3.get(Siglas.ALIQ));
+			assertEquals(14.00, anexoIV.faixa_4.get(Siglas.ALIQ));
+			assertEquals(22.00, anexoIV.faixa_5.get(Siglas.ALIQ));
+			assertEquals(33.00, anexoIV.faixa_6.get(Siglas.ALIQ));
+			
+			assertEquals(0.00, anexoIV.faixa_1.get(Siglas.VD));
+			assertEquals(8100.00, anexoIV.faixa_2.get(Siglas.VD));
+			assertEquals(12420.00, anexoIV.faixa_3.get(Siglas.VD));
+			assertEquals(39780.00, anexoIV.faixa_4.get(Siglas.VD));
+			assertEquals(183780.00, anexoIV.faixa_5.get(Siglas.VD));
+			assertEquals(828000.00, anexoIV.faixa_6.get(Siglas.VD));
+		}
+
+		@Test
+		@DisplayName("anexo V")
+		void test_anexoV() throws FileNotFoundException {
+			Anexo anexoV = new Anexo_V();
+			assertEquals(15.50, anexoV.faixa_1.get(Siglas.ALIQ));
+			assertEquals(18.00, anexoV.faixa_2.get(Siglas.ALIQ));
+			assertEquals(19.50, anexoV.faixa_3.get(Siglas.ALIQ));
+			assertEquals(20.50, anexoV.faixa_4.get(Siglas.ALIQ));
+			assertEquals(23.00, anexoV.faixa_5.get(Siglas.ALIQ));
+			assertEquals(30.50, anexoV.faixa_6.get(Siglas.ALIQ));
+			
+			assertEquals(0.00, anexoV.faixa_1.get(Siglas.VD));
+			assertEquals(4500.00, anexoV.faixa_2.get(Siglas.VD));
+			assertEquals(9900.00, anexoV.faixa_3.get(Siglas.VD));
+			assertEquals(17100.00, anexoV.faixa_4.get(Siglas.VD));
+			assertEquals(62100.00, anexoV.faixa_5.get(Siglas.VD));
+			assertEquals(540000.00, anexoV.faixa_6.get(Siglas.VD));
+		}
+		
 	}
+	
 	
 	
 

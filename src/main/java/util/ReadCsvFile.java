@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import exception.FormatDataException;
-import model.entity.Anexo;
 import model.entity.Nota;
+import model.entity.anexo.Anexo;
 import model.entity.enums.Siglas;
 
 public class ReadCsvFile {
@@ -22,7 +22,11 @@ public class ReadCsvFile {
 	String first;
 	public Path pathNotas = Paths.get("src/main/resources/notas-geradas.csv");
 	public Path pathAnexoI = Paths.get("src/main/resources/anexo-I.csv");
+	public Path pathAnexoII = Paths.get("src/main/resources/anexo-II.csv");
+	public Path pathAnexoIII = Paths.get("src/main/resources/anexo-III.csv");
 	public Path pathAnexoIV = Paths.get("src/main/resources/anexo-IV.csv");
+	public Path pathAnexoV = Paths.get("src/main/resources/anexo-V.csv");
+	public Path pathAnexoVI = Paths.get("src/main/resources/anexo-VI.csv");
 
 	public List<Nota> lerNotas() throws FileNotFoundException{
 		List<Nota> notas = new ArrayList<>();
@@ -76,11 +80,12 @@ public class ReadCsvFile {
 				anexos[0].faixa_5.put(Siglas.ALIQ, Double.parseDouble(linhas[1]));
 				anexos[0].faixa_5.put(Siglas.VD, valorDeducao);
 			}
-
+			
 			if(linhas[0].contains("6")) {
 				anexos[0].faixa_6.put(Siglas.ALIQ, Double.parseDouble(linhas[1]));
 				anexos[0].faixa_6.put(Siglas.VD, valorDeducao);
 			}
+			
 		}
 
 	}

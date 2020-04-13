@@ -1,4 +1,4 @@
-package model.entity;
+package model.entity.anexo;
 
 import java.io.FileNotFoundException;
 
