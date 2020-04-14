@@ -38,7 +38,8 @@ class simplesNacionalServiceTest {
 	@BeforeEach
 	void setUp() throws FileNotFoundException {
 		mesReferente = LocalDate.now();
-		simplesNacionalService = new SimplesNacionalService(mesReferente, readCsv);
+		simplesNacionalService = new SimplesNacionalService(readCsv);
+		simplesNacionalService.setMesReferente(mesReferente);
 		
 		notas = new ArrayList<>();
 		Nota notaTest = new Nota(null, null);
@@ -86,7 +87,7 @@ class simplesNacionalServiceTest {
 	@DisplayName("Retornar a soma correta da receita bruta dos ultimos 12 meses")
 	void test_somarReceitaBruta12Meses() throws FileNotFoundException{
 		
-		when(readCsv.lerNotas()).thenReturn(notas);
+		simplesNacionalService.setNotasGeradas(notas);
 		
 		Double receitaBruta = simplesNacionalService.getReceitaBruta12Meses();
 		
@@ -106,7 +107,7 @@ class simplesNacionalServiceTest {
 	@Test
 	@DisplayName("Encontrar a faixa correta")
 	void test_faixaImposto() throws FileNotFoundException {
-		when(readCsv.lerNotas()).thenReturn(notas);
+		simplesNacionalService.setNotasGeradas(notas);
 		FaixasFaturamento faixa = simplesNacionalService.getFaixa();
 		assertEquals(FaixasFaturamento.FAIXA_1, faixa);
 	}

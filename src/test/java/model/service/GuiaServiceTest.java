@@ -56,12 +56,8 @@ class GuiaServiceTest {
 		Guia guia = inTest.calcularGuia(mesReferente, anexo);
 		
 		assertEquals(2721.875, guia.getValor());
-	}
-	
-	@Test
-	@DisplayName("Encontrar a faixa correta")
-	void test_faixaImposto() {
-		
+		assertEquals(mesReferente, guia.getMesReferencia());
+		assertEquals(LocalDate.of(2019, 12, 20), guia.getDataVencimento());
 	}
 
 }

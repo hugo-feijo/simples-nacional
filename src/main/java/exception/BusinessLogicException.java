@@ -6,6 +6,8 @@ public class BusinessLogicException extends RuntimeException{
 
 	public static String msgFaturamentoZerado = "O faturamento mensal não pode ser R$ 0,00";
 
+	public static String msgMesReferenteNaoInformado = "O periodo de referencia não foi informado";
+
 	
 	public BusinessLogicException(String msg) {
 		super(msg);

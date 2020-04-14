@@ -1,6 +1,7 @@
 package model.entity;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Nota {
 
@@ -23,6 +24,11 @@ public class Nota {
 	}
 	public void setDataEmissao(LocalDate dataEmissao) {
 		this.dataEmissao = dataEmissao;
+	}
+	@Override
+	public String toString() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		return String.format("Emitida em: %s; Valor: R$ %.2f", dataEmissao.format(formatter), valor);
 	}
 	
 }

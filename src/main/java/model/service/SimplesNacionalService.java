@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import exception.BusinessLogicException;
 import exception.FormatDataException;
@@ -20,11 +22,16 @@ public class SimplesNacionalService {//TODO: talvez refatorar esta classe separa
 	private LocalDate mesReferente;
 	private FaixasFaturamento faixa;
 	
-	public SimplesNacionalService(LocalDate mesReferente, ReadCsvFile readCsv) throws FileNotFoundException {//TODO: remover mes referente do construtor
-		this.mesReferente = mesReferente;
+	public SimplesNacionalService(ReadCsvFile readCsv) throws FileNotFoundException {//TODO: remover mes referente do construtor
 		this.readCsv = readCsv;
+		lerNotas();
 	}
 	
+	private void lerNotas() throws FileNotFoundException {
+		Stream<Nota> sortedNota = readCsv.lerNotas().stream().sorted((a, b) -> a.getDataEmissao().compareTo(b.getDataEmissao()));
+		this.notasGeradas = sortedNota.collect(Collectors.toList());
+	}
+
 	public List<Nota> getNotasGeradas() {
 		return this.notasGeradas;
 	}
@@ -97,9 +104,11 @@ public class SimplesNacionalService {//TODO: talvez refatorar esta classe separa
 	}
 
 	public Double calcularReceitaBruta() throws FileNotFoundException {
+		if(mesReferente == null) {
+			throw new BusinessLogicException(BusinessLogicException.msgMesReferenteNaoInformado);
+		}
 		LocalDate antesDe = mesReferente.minusDays(mesReferente.getDayOfMonth());
 		LocalDate depoisDe = mesReferente.minusMonths(12).minusDays(mesReferente.getDayOfMonth() - 1 );
-		notasGeradas = readCsv.lerNotas();
 		
 		notasGeradas.forEach(notas -> {
 			if(notas.getDataEmissao().isBefore(antesDe) && notas.getDataEmissao().isAfter(depoisDe)) {
