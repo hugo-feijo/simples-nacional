@@ -8,17 +8,19 @@ import java.util.List;
 import exception.BusinessLogicException;
 import exception.FormatDataException;
 import model.entity.Nota;
+import model.entity.enums.FaixasFaturamento;
 import util.ReadCsvFile;
 
-public class SimplesNacionalService {
+public class SimplesNacionalService {//TODO: talvez refatorar esta classe separando uma entidade
 
 	private Double receitaBruta12Meses = 0.0;
 	private Double faturamentoMensal = 0.0;
 	private List<Nota> notasGeradas = new ArrayList<>();;
 	private ReadCsvFile readCsv;
 	private LocalDate mesReferente;
+	private FaixasFaturamento faixa;
 	
-	public SimplesNacionalService(LocalDate mesReferente, ReadCsvFile readCsv) throws FileNotFoundException {
+	public SimplesNacionalService(LocalDate mesReferente, ReadCsvFile readCsv) throws FileNotFoundException {//TODO: remover mes referente do construtor
 		this.mesReferente = mesReferente;
 		this.readCsv = readCsv;
 	}
@@ -44,7 +46,7 @@ public class SimplesNacionalService {
 	}
 
 	public void setMesReferente(LocalDate mesReferente) {
-		this.mesReferente = mesReferente;
+		this.mesReferente = mesReferente;// TODO: lançar exception se mês de referencia for nulo;
 	}
 
 	public Double getFaturamentoMensal() throws FileNotFoundException {
@@ -57,6 +59,41 @@ public class SimplesNacionalService {
 
 	public ReadCsvFile getReadCsv() {
 		return readCsv;
+	}
+
+	public FaixasFaturamento getFaixa() throws FileNotFoundException {
+		return encontrarFaixa();
+	}
+
+	private FaixasFaturamento encontrarFaixa() throws FileNotFoundException {
+		Double receitaBruta = calcularReceitaBruta();
+		System.out.println(receitaBruta);
+		if(FaixasFaturamento.FAIXA_1_MIN.valor <= receitaBruta &&
+				receitaBruta <= FaixasFaturamento.FAIXA_1_MAX.valor) {
+			faixa = FaixasFaturamento.FAIXA_1;
+		}
+		if(FaixasFaturamento.FAIXA_2_MIN.valor <= receitaBruta &&
+				receitaBruta <= FaixasFaturamento.FAIXA_2_MAX.valor) {
+			faixa = FaixasFaturamento.FAIXA_2;
+		}
+		if(FaixasFaturamento.FAIXA_3_MIN.valor <= receitaBruta &&
+				receitaBruta <= FaixasFaturamento.FAIXA_3_MAX.valor) {
+			faixa = FaixasFaturamento.FAIXA_3;
+		}
+		if(FaixasFaturamento.FAIXA_4_MIN.valor <= receitaBruta &&
+				receitaBruta <= FaixasFaturamento.FAIXA_4_MAX.valor) {
+			faixa = FaixasFaturamento.FAIXA_4;
+		}
+		if(FaixasFaturamento.FAIXA_5_MIN.valor <= receitaBruta &&
+				receitaBruta <= FaixasFaturamento.FAIXA_5_MAX.valor) {
+			faixa = FaixasFaturamento.FAIXA_5;
+		}
+		if(FaixasFaturamento.FAIXA_6_MIN.valor <= receitaBruta &&
+				receitaBruta <= FaixasFaturamento.FAIXA_6_MAX.valor) {
+			faixa = FaixasFaturamento.FAIXA_6;
+		}
+		
+		return faixa;
 	}
 
 	public Double calcularReceitaBruta() throws FileNotFoundException {

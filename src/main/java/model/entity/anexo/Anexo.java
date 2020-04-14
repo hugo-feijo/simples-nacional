@@ -39,6 +39,24 @@ public class Anexo {
 		faixa_6.put(Siglas.FAT_MAX, FaixasFaturamento.FAIXA_6_MIN.valor);
 	}
 
+	public Map<Siglas, Double> getFaixaFaturamento(FaixasFaturamento faixa) {
+		Map<Siglas, Double> faixaCorreta = new HashMap<>();
+		
+		if(faixa == FaixasFaturamento.FAIXA_1)
+			faixaCorreta = faixa_1;
+		if(faixa == FaixasFaturamento.FAIXA_2)
+			faixaCorreta = faixa_2;
+		if(faixa == FaixasFaturamento.FAIXA_3)
+			faixaCorreta = faixa_3;
+		if(faixa == FaixasFaturamento.FAIXA_4)
+			faixaCorreta = faixa_4;
+		if(faixa == FaixasFaturamento.FAIXA_5)
+			faixaCorreta = faixa_5;
+		if(faixa == FaixasFaturamento.FAIXA_6)
+			faixaCorreta = faixa_6;
+		
+		return faixaCorreta;
+	}
 	public Map<Siglas, Double> getFaixa_1() {
 		return faixa_1;
 	}
