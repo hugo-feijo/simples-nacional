@@ -74,7 +74,6 @@ public class SimplesNacionalService {//TODO: talvez refatorar esta classe separa
 
 	private FaixasFaturamento encontrarFaixa() throws FileNotFoundException {
 		Double receitaBruta = calcularReceitaBruta();
-		System.out.println(receitaBruta);
 		if(FaixasFaturamento.FAIXA_1_MIN.valor <= receitaBruta &&
 				receitaBruta <= FaixasFaturamento.FAIXA_1_MAX.valor) {
 			faixa = FaixasFaturamento.FAIXA_1;
@@ -104,9 +103,8 @@ public class SimplesNacionalService {//TODO: talvez refatorar esta classe separa
 	}
 
 	public Double calcularReceitaBruta() throws FileNotFoundException {
-		if(mesReferente == null) {
-			throw new BusinessLogicException(BusinessLogicException.msgMesReferenteNaoInformado);
-		}
+		if(mesReferente == null) throw new BusinessLogicException(BusinessLogicException.msgMesReferenteNaoInformado);
+
 		LocalDate antesDe = mesReferente.minusDays(mesReferente.getDayOfMonth());
 		LocalDate depoisDe = mesReferente.minusMonths(12).minusDays(mesReferente.getDayOfMonth() - 1 );
 		
@@ -116,9 +114,8 @@ public class SimplesNacionalService {//TODO: talvez refatorar esta classe separa
 			}
 		});
 		
-		if (receitaBruta12Meses == 0.0) {
-			throw new FormatDataException(FormatDataException.msgArquivoVazio);
-		}
+		if (receitaBruta12Meses == 0.0) throw new FormatDataException(FormatDataException.msgArquivoVazio);
+		
 		return receitaBruta12Meses;
 		
 	}

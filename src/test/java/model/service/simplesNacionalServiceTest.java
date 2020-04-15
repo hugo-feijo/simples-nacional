@@ -66,6 +66,7 @@ class simplesNacionalServiceTest {
 		@Test
 		@DisplayName("se o valor da receita bruta for zerado")
 		void test_ExcecaoSeReceitaForZerada() {
+			notas = new ArrayList<>();
 			simplesNacionalService.setNotasGeradas(notas);
 			
 			RuntimeException exception = assertThrows(FormatDataException.class, () -> simplesNacionalService.getReceitaBruta12Meses());

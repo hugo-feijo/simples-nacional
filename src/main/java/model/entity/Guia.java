@@ -1,6 +1,7 @@
 package model.entity;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Guia {
 
@@ -30,6 +31,14 @@ public class Guia {
 	}
 	public void setMesReferencia(LocalDate mesReferencia) {
 		this.mesReferencia = mesReferencia;
+	}
+	@Override
+	public String toString() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		DateTimeFormatter formatterMes = DateTimeFormatter.ofPattern("L/yyyy");
+		
+		return String.format("Guia - Valor = R$ %.2f, vencimento = %s, referente = %s", valor, dataVencimento.format(formatter),
+				mesReferencia.format(formatterMes));
 	}
 	
 	
