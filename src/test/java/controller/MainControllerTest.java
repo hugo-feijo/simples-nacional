@@ -22,15 +22,15 @@ import model.entity.Guia;
 import model.entity.anexo.Anexo;
 import model.service.GuiaService;
 import model.service.SimplesNacionalService;
+import view.MainView;
 import view.ShowDataView;
-import view.Teste;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Main Controller deveria")
 class MainControllerTest {
 
 	@Mock
-	private Teste mainView;
+	private MainView mainView;
 	
 	@Mock
 	private ShowDataView showData;

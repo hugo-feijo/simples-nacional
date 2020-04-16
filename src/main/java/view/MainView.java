@@ -6,11 +6,10 @@ import java.util.Scanner;
 
 import exception.ViewException;
 
-public class MainView implements Teste {
+public class MainView {
 
 	Scanner sc = new Scanner(System.in);
 	
-	@Override
 	public String exibirMenu() {
 		String opcao;
 		System.out.println("--------------MENU--------------");
@@ -27,7 +26,6 @@ public class MainView implements Teste {
 		return opcao.toLowerCase();
 	}
 	
-	@Override
 	public String getMesReferente() {
 		String mesReferente;
 		System.out.println("Calcular guia referente a qual mês e ano (ex: 01/2020):");
@@ -35,7 +33,6 @@ public class MainView implements Teste {
 		return mesReferente;
 	}
 	
-	@Override
 	public String getAnexo() {
 		String anexo;
 		List<String> opcoes = Arrays.asList("1", "2", "3", "4", "5");
@@ -56,7 +53,6 @@ public class MainView implements Teste {
 		return anexo;
 	}
 	
-	@Override
 	public ArrayList<String> getPeriodo() {
 		ArrayList<String> periodo = new ArrayList<String>();
 		String periodoDe;

@@ -15,17 +15,17 @@ import model.entity.anexo.Anexo_IV;
 import model.entity.anexo.Anexo_V;
 import model.service.GuiaService;
 import model.service.SimplesNacionalService;
+import view.MainView;
 import view.ShowDataView;
-import view.Teste;
 
 public class MainController {
 
-	private Teste mainView;
+	private MainView mainView;
 	private ShowDataView showData;
 	private SimplesNacionalService simplesService;
 	private GuiaService guiaService;
 
-	public MainController(Teste mainView, ShowDataView showData, SimplesNacionalService simplesService,
+	public MainController(MainView mainView, ShowDataView showData, SimplesNacionalService simplesService,
 			GuiaService guiaService) {
 		this.mainView = mainView;
 		this.showData = showData;
