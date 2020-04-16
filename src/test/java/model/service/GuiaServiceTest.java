@@ -59,5 +59,23 @@ class GuiaServiceTest {
 		assertEquals(mesReferente, guia.getMesReferencia());
 		assertEquals(LocalDate.of(2019, 12, 20), guia.getDataVencimento());
 	}
+	
+	@Test
+	@DisplayName("Retornar a lista com todas as guias")
+	void test_listarGuias() throws FileNotFoundException {
+		Map<Siglas, Double> faixa_2 = new HashMap<>();
+		faixa_2.put(Siglas.ALIQ, 7.30);
+		faixa_2.put(Siglas.VD, 5940.00);
+		
+		when(simplesNacionalServiceTest.getReceitaBruta12Meses()).thenReturn(320000.00);
+		when(simplesNacionalServiceTest.getFaturamentoMensal()).thenReturn(50000.00);
+		when(simplesNacionalServiceTest.getFaixa()).thenReturn(FaixasFaturamento.FAIXA_2);
+		when(anexo.getFaixaFaturamento(FaixasFaturamento.FAIXA_2)).thenReturn(faixa_2);
+	
+		LocalDate de = LocalDate.of(2019, 04, 01);
+		LocalDate ate = LocalDate.of(2019, 07, 01);
+		
+		assertEquals(4, inTest.calcularTodasGuias(anexo,de,ate).size());
+	}
 
 }

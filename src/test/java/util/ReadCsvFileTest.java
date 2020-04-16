@@ -61,6 +61,15 @@ class ReadCsvFileTest {
 			assertThrows(FileNotFoundException.class, () -> inTest.setAnexo(inTest.pathNotas, new Anexo()));
 		}
 		
+		@Test
+		@DisplayName("se arquivo estiver vazio")
+		void test_arquivoVazio() {
+			inTest.pathNotas = Paths.get("src/test/resources/notas-vazia.csv");
+			
+			FormatDataException exception = assertThrows(FormatDataException.class, () -> inTest.lerNotas());
+			assertEquals(FormatDataException.msgArquivoVazio, exception.getMessage());
+		}
+		
 		@Nested
 		@DisplayName("se o valor")
 		class valorIncorreto{

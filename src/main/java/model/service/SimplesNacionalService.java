@@ -22,12 +22,12 @@ public class SimplesNacionalService {//TODO: talvez refatorar esta classe separa
 	private LocalDate mesReferente;
 	private FaixasFaturamento faixa;
 	
-	public SimplesNacionalService(ReadCsvFile readCsv) throws FileNotFoundException {//TODO: remover mes referente do construtor
+	public SimplesNacionalService(ReadCsvFile readCsv) throws FileNotFoundException {
 		this.readCsv = readCsv;
 		lerNotas();
 	}
 	
-	private void lerNotas() throws FileNotFoundException {
+	private void lerNotas() throws FileNotFoundException, FormatDataException {
 		Stream<Nota> sortedNota = readCsv.lerNotas().stream().sorted((a, b) -> a.getDataEmissao().compareTo(b.getDataEmissao()));
 		this.notasGeradas = sortedNota.collect(Collectors.toList());
 	}
@@ -114,15 +114,12 @@ public class SimplesNacionalService {//TODO: talvez refatorar esta classe separa
 			}
 		});
 		
-		if (receitaBruta12Meses == 0.0) throw new FormatDataException(FormatDataException.msgArquivoVazio);
 		
 		return receitaBruta12Meses;
 		
 	}
 	
 	public Double calcularFaturamentoMensal() throws FileNotFoundException {
-		notasGeradas = readCsv.lerNotas();
-		
 		notasGeradas.forEach(notas -> {
 			if(notas.getDataEmissao().getMonth() == mesReferente.getMonth() && 
 					notas.getDataEmissao().getYear() == mesReferente.getYear()) {

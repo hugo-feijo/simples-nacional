@@ -2,6 +2,7 @@ package controller;
 
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import exception.BusinessLogicException;
 import exception.ViewException;
@@ -15,25 +16,29 @@ import model.entity.anexo.Anexo_V;
 import model.service.GuiaService;
 import model.service.SimplesNacionalService;
 import view.MainView;
+import view.ShowDataView;
 
 public class MainController {
 
 	private MainView mainView;
+	private ShowDataView showData;
 	private SimplesNacionalService simplesService;
 	private GuiaService guiaService;
 
-	public MainController(GuiaService guiaService, SimplesNacionalService simplesNacionalService, MainView mainView) {
-		this.guiaService = guiaService;
-		this.simplesService = simplesNacionalService;
+	public MainController(MainView mainView, ShowDataView showData, SimplesNacionalService simplesService,
+			GuiaService guiaService) {
 		this.mainView = mainView;
+		this.showData = showData;
+		this.simplesService = simplesService;
+		this.guiaService = guiaService;
 	}
 
 	public void start() {
 		try {
 			application();
-		} catch (BusinessLogicException | FileNotFoundException e) {
+		} catch (BusinessLogicException | FileNotFoundException | ViewException e) {
 			System.out.println("*********");
-			System.out.printf("Erro: %s", e.getMessage());
+			System.out.printf("Erro: %s\n", e.getMessage());
 			System.out.println("*********");
 		}
 	}
@@ -42,20 +47,40 @@ public class MainController {
 		String opcao = "";
 		while (opcao != null) {
 			opcao = mainView.exibirMenu();
-
 			switch (opcao) {
 			case "1":
 				printGuia();
 				break;
 
 			case "2":
-				mainView.exibirNotas(simplesService.getNotasGeradas());
+				showData.exibirNotas(simplesService.getNotasGeradas());
 				clearConsole();
 				break;
-
+			case "3":
+				Anexo anexo = getAnexoOfString();
+				LocalDate[] periodo = getPeriodo();
+				showData.exibirGuias(guiaService.calcularTodasGuias(anexo, periodo[0], periodo[1]));
+				break;
+			
+			case "x":
+				System.out.println("Tchau....");
+				opcao = null;
 			default:
+				System.out.println("Opção invalida");
 				break;
 			}
+		}
+	}
+
+	private LocalDate[] getPeriodo() {
+		ArrayList<String> txtPeriodo = mainView.getPeriodo();
+		LocalDate periodoDe = parseStringToLocalDate(txtPeriodo.get(0));
+		LocalDate periodoAte = parseStringToLocalDate(txtPeriodo.get(1));
+		LocalDate[] periodo = {periodoDe, periodoAte};
+		if(periodoDe.isAfter(periodoAte)) {
+			throw new BusinessLogicException(BusinessLogicException.msgPeriodoIncorreto);
+		} else {
+			return periodo;			
 		}
 	}
 
@@ -64,8 +89,8 @@ public class MainController {
 		LocalDate mesReferente = parseStringToLocalDate(competencia);// TODO: imprimir guias, Criar List<guia>
 		System.out.println("");
 		
-		String txtAnexo = mainView.getAnexo();
-		Anexo anexo = parseStringToAnexo(txtAnexo);
+		
+		Anexo anexo = getAnexoOfString();
 		System.out.println("");
 		
 		Guia guia = guiaService.calcularGuia(mesReferente, anexo);
@@ -74,10 +99,11 @@ public class MainController {
 		System.out.println("");
 	}
 
-	private Anexo parseStringToAnexo(String anexo) throws FileNotFoundException {
+	private Anexo getAnexoOfString() throws FileNotFoundException {
+		String txtAnexo = mainView.getAnexo();
 		Anexo anexoFinal = new Anexo();
 
-		switch (anexo) {
+		switch (txtAnexo) {
 		case "1":
 			anexoFinal = new Anexo_I();
 			break;

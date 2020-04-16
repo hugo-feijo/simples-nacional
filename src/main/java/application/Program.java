@@ -7,6 +7,7 @@ import model.service.GuiaService;
 import model.service.SimplesNacionalService;
 import util.ReadCsvFile;
 import view.MainView;
+import view.ShowDataView;
 
 public class Program {
 
@@ -14,10 +15,11 @@ public class Program {
 
 		ReadCsvFile readCsv = new ReadCsvFile();
 		MainView mainView = new MainView();
+		ShowDataView showData = new ShowDataView();
 		SimplesNacionalService simplesNacionalService = new SimplesNacionalService(readCsv);
 		GuiaService guiaService = new GuiaService(simplesNacionalService);
 		
-		MainController mainController = new MainController(guiaService,simplesNacionalService, mainView);
+		MainController mainController = new MainController(mainView, showData, simplesNacionalService, guiaService);
 		
 		mainController.start();
 	}

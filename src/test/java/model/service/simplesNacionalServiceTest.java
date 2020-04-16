@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import static org.mockito.Mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import exception.BusinessLogicException;
-import exception.FormatDataException;
 import model.entity.Nota;
 import model.entity.enums.FaixasFaturamento;
 import util.ReadCsvFile;
@@ -62,16 +60,6 @@ class simplesNacionalServiceTest {
 	@Nested
 	@DisplayName("Lançar um exceção")
 	class lancarExcecao {
-
-		@Test
-		@DisplayName("se o valor da receita bruta for zerado")
-		void test_ExcecaoSeReceitaForZerada() {
-			notas = new ArrayList<>();
-			simplesNacionalService.setNotasGeradas(notas);
-			
-			RuntimeException exception = assertThrows(FormatDataException.class, () -> simplesNacionalService.getReceitaBruta12Meses());
-			assertEquals(FormatDataException.msgArquivoVazio, exception.getMessage());
-		}
 		
 		@Test
 		@DisplayName("se o faturamento mensal for zerado")
@@ -98,8 +86,7 @@ class simplesNacionalServiceTest {
 	@Test
 	@DisplayName("Retorna o faturamento mensal correto")
 	void test_somaFaturamentoMensal() throws FileNotFoundException {
-		when(readCsv.lerNotas()).thenReturn(notas);
-		
+		simplesNacionalService.setNotasGeradas(notas);
 		simplesNacionalService.setMesReferente(LocalDate.now().minusMonths(14));
 		
 		assertEquals(2000, simplesNacionalService.getFaturamentoMensal());

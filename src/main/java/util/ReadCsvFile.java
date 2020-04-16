@@ -33,6 +33,8 @@ public class ReadCsvFile {
 		BufferedReader br = new BufferedReader(new FileReader(pathNotas.toString()));
 		try{
 			parseDataCsvToNota(br, notas);
+			if(notas.isEmpty())
+				throw new FormatDataException(FormatDataException.msgArquivoVazio);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
@@ -40,50 +42,52 @@ public class ReadCsvFile {
 		return notas;
 	}
 
-	public void setAnexo(Path path, Anexo... anexos) throws FileNotFoundException {
+	public void setAnexo(Path path, Anexo anexos) throws FileNotFoundException {
 		BufferedReader bufferedReader = new BufferedReader(new FileReader(path.toString()));
 		try {
 			parseDataCsvToAnexo(bufferedReader, anexos);
+			if(!anexos.faixa_1.containsKey(Siglas.ALIQ)) 
+				throw new FormatDataException(FormatDataException.msgArquivoVazio);
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void parseDataCsvToAnexo(BufferedReader br, Anexo[] anexos) throws IOException {
+	public void parseDataCsvToAnexo(BufferedReader br, Anexo anexos) throws IOException {
 		String line = "";
 		while ((line = br.readLine()) != null) {
 			String[] linhas = line.split(";");
 			Double valorDeducao = parseStringToDouble(linhas[2]);
 			
 			if(linhas[0].contains("1")) {
-				anexos[0].faixa_1.put(Siglas.ALIQ, Double.parseDouble(linhas[1]));
-				anexos[0].faixa_1.put(Siglas.VD, valorDeducao);
+				anexos.faixa_1.put(Siglas.ALIQ, Double.parseDouble(linhas[1]));
+				anexos.faixa_1.put(Siglas.VD, valorDeducao);
 			}
 
 			if(linhas[0].contains("2")) {
-				anexos[0].faixa_2.put(Siglas.ALIQ, Double.parseDouble(linhas[1]));
-				anexos[0].faixa_2.put(Siglas.VD, valorDeducao);
+				anexos.faixa_2.put(Siglas.ALIQ, Double.parseDouble(linhas[1]));
+				anexos.faixa_2.put(Siglas.VD, valorDeducao);
 			}
 
 			if(linhas[0].contains("3")) {
-				anexos[0].faixa_3.put(Siglas.ALIQ, Double.parseDouble(linhas[1]));
-				anexos[0].faixa_3.put(Siglas.VD, valorDeducao);
+				anexos.faixa_3.put(Siglas.ALIQ, Double.parseDouble(linhas[1]));
+				anexos.faixa_3.put(Siglas.VD, valorDeducao);
 			}
 
 			if(linhas[0].contains("4")) {
-				anexos[0].faixa_4.put(Siglas.ALIQ, Double.parseDouble(linhas[1]));
-				anexos[0].faixa_4.put(Siglas.VD, valorDeducao);
+				anexos.faixa_4.put(Siglas.ALIQ, Double.parseDouble(linhas[1]));
+				anexos.faixa_4.put(Siglas.VD, valorDeducao);
 			}
 
 			if(linhas[0].contains("5")) {
-				anexos[0].faixa_5.put(Siglas.ALIQ, Double.parseDouble(linhas[1]));
-				anexos[0].faixa_5.put(Siglas.VD, valorDeducao);
+				anexos.faixa_5.put(Siglas.ALIQ, Double.parseDouble(linhas[1]));
+				anexos.faixa_5.put(Siglas.VD, valorDeducao);
 			}
 			
 			if(linhas[0].contains("6")) {
-				anexos[0].faixa_6.put(Siglas.ALIQ, Double.parseDouble(linhas[1]));
-				anexos[0].faixa_6.put(Siglas.VD, valorDeducao);
+				anexos.faixa_6.put(Siglas.ALIQ, Double.parseDouble(linhas[1]));
+				anexos.faixa_6.put(Siglas.VD, valorDeducao);
 			}
 			
 		}

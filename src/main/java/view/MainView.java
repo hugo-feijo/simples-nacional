@@ -1,10 +1,10 @@
 package view;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
 import exception.ViewException;
-import model.entity.Nota;
 
 public class MainView {
 
@@ -15,13 +15,15 @@ public class MainView {
 		System.out.println("--------------MENU--------------");
 		System.out.println("Selecione uma das opções: ");
 		System.out.println("[1] - Calcular guia.");
-		System.out.println("[2] - Exibir todas as notas cadastrads.");
+		System.out.println("[2] - Exibir todas as notas cadastradas.");
+		System.out.println("[3] - Exibir todas as guias para todas notas cadastradas.");
+		System.out.println("[x] - Sair.");
 		System.out.print("Insira um opção: ");
 		
 		opcao = sc.nextLine();
 		System.out.println("");
 		System.out.println("");
-		return opcao;
+		return opcao.toLowerCase();
 	}
 	
 	public String getMesReferente() {
@@ -51,19 +53,21 @@ public class MainView {
 		return anexo;
 	}
 	
-	public String exibirNotas(List<Nota> notas) {
-		String opcao;
-		notas.forEach(nota -> {
-			System.out.println(nota.toString());
-		});
+	public ArrayList<String> getPeriodo() {
+		ArrayList<String> periodo = new ArrayList<String>();
+		String periodoDe;
+		String periodoAte;
 		
-		System.out.println("");
-		System.out.println("-------OPÇOES-------");
-		System.out.println("Selecione uma das opções: ");
-		System.out.println("[1] - Voltar ao menu.");
-		System.out.print("Insira um opção: ");
+		System.out.println("Informe um periodo (ex: 01/2020)");
+		System.out.print("De: ");
+		periodoDe = sc.nextLine();
+		System.out.print("Até: ");
+		periodoAte = sc.nextLine();
 		
-		opcao = sc.nextLine();
-		return opcao;
+		periodo.add(periodoDe);
+		periodo.add(periodoAte);
+		
+		return periodo;
 	}
+	
 }
