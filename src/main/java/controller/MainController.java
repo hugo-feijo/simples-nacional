@@ -15,17 +15,17 @@ import model.entity.anexo.Anexo_IV;
 import model.entity.anexo.Anexo_V;
 import model.service.GuiaService;
 import model.service.SimplesNacionalService;
-import view.MainView;
 import view.ShowDataView;
+import view.Teste;
 
 public class MainController {
 
-	private MainView mainView;
+	private Teste mainView;
 	private ShowDataView showData;
 	private SimplesNacionalService simplesService;
 	private GuiaService guiaService;
 
-	public MainController(MainView mainView, ShowDataView showData, SimplesNacionalService simplesService,
+	public MainController(Teste mainView, ShowDataView showData, SimplesNacionalService simplesService,
 			GuiaService guiaService) {
 		this.mainView = mainView;
 		this.showData = showData;
@@ -54,8 +54,8 @@ public class MainController {
 
 			case "2":
 				showData.exibirNotas(simplesService.getNotasGeradas());
-				clearConsole();
 				break;
+				
 			case "3":
 				Anexo anexo = getAnexoOfString();
 				LocalDate[] periodo = getPeriodo();
@@ -65,6 +65,7 @@ public class MainController {
 			case "x":
 				System.out.println("Tchau....");
 				opcao = null;
+				
 			default:
 				System.out.println("Opção invalida");
 				break;
@@ -86,7 +87,7 @@ public class MainController {
 
 	public void printGuia() throws FileNotFoundException {
 		String competencia = mainView.getMesReferente();
-		LocalDate mesReferente = parseStringToLocalDate(competencia);// TODO: imprimir guias, Criar List<guia>
+		LocalDate mesReferente = parseStringToLocalDate(competencia);
 		System.out.println("");
 		
 		
@@ -97,6 +98,7 @@ public class MainController {
 		System.out.println("");
 		System.out.println(guia.toString());
 		System.out.println("");
+		showData.fecharView();
 	}
 
 	private Anexo getAnexoOfString() throws FileNotFoundException {
@@ -136,8 +138,4 @@ public class MainController {
 		}
 	}
 
-	public void clearConsole() {
-		for (int i = 0; i < 50; ++i)
-			System.out.println();
-	}
 }

@@ -92,12 +92,80 @@ class simplesNacionalServiceTest {
 		assertEquals(2000, simplesNacionalService.getFaturamentoMensal());
 	}
 
-	@Test
-	@DisplayName("Encontrar a faixa correta")
-	void test_faixaImposto() throws FileNotFoundException {
-		simplesNacionalService.setNotasGeradas(notas);
-		FaixasFaturamento faixa = simplesNacionalService.getFaixa();
-		assertEquals(FaixasFaturamento.FAIXA_1, faixa);
+	
+	@Nested
+	@DisplayName("Encontrar a faixa correta do imposto: ")
+	class returnFaixa{
+
+		FaixasFaturamento faixa;
+		List<Nota> notasFaixa = new ArrayList<Nota>();
+		
+		@BeforeEach
+		void setUp() {
+			simplesNacionalService.setMesReferente(mesReferente.plusMonths(1));
+			notasFaixa.add(new Nota(0.00, LocalDate.now()));
+		}
+		
+		@Test
+		@DisplayName("Faixa 1")
+		void test_faixa1() throws FileNotFoundException {
+			
+			notasFaixa.get(0).setValor(180000.00);;
+			simplesNacionalService.setNotasGeradas(notasFaixa);
+			faixa = simplesNacionalService.getFaixa();
+			assertEquals(FaixasFaturamento.FAIXA_1, faixa);
+		}
+
+		@Test
+		@DisplayName("Faixa 2")
+		void test_faixa2() throws FileNotFoundException {
+			
+			notasFaixa.get(0).setValor(180001.00);;
+			 simplesNacionalService.setNotasGeradas(notasFaixa);
+			faixa = simplesNacionalService.getFaixa();
+			assertEquals(FaixasFaturamento.FAIXA_2, faixa);
+		}
+		
+		@Test
+		@DisplayName("Faixa 3")
+		void test_faixa3() throws FileNotFoundException {
+			
+			notasFaixa.get(0).setValor(360001.00);;
+			simplesNacionalService.setNotasGeradas(notasFaixa);
+			faixa = simplesNacionalService.getFaixa();
+			assertEquals(FaixasFaturamento.FAIXA_3, faixa);
+		}
+
+		@Test
+		@DisplayName("Faixa 4")
+		void test_faixa4() throws FileNotFoundException {
+			
+			notasFaixa.get(0).setValor(720001.00);;
+			simplesNacionalService.setNotasGeradas(notasFaixa);
+			faixa = simplesNacionalService.getFaixa();
+			assertEquals(FaixasFaturamento.FAIXA_4, faixa);
+		}
+
+		@Test
+		@DisplayName("Faixa 5")
+		void test_faixa5() throws FileNotFoundException {
+			
+			notasFaixa.get(0).setValor(1800001.00);;
+			simplesNacionalService.setNotasGeradas(notasFaixa);
+			faixa = simplesNacionalService.getFaixa();
+			assertEquals(FaixasFaturamento.FAIXA_5, faixa);
+		}
+
+		@Test
+		@DisplayName("Faixa 6")
+		void test_faixa6() throws FileNotFoundException {
+			
+			notasFaixa.get(0).setValor(3600001.00);;
+			simplesNacionalService.setNotasGeradas(notasFaixa);
+			faixa = simplesNacionalService.getFaixa();
+			assertEquals(FaixasFaturamento.FAIXA_6, faixa);
+		}
 	}
+	
 
 }
