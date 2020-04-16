@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GuiaService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Simples Nacional</a> &gt; <a href="index.source.html" class="el_package">model.service</a> &gt; <span class="el_source">GuiaService.java</span></div><h1>GuiaService.java</h1><pre class="source lang-java linenums">package model.service;
+
+import java.io.FileNotFoundException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import exception.BusinessLogicException;
+import model.entity.Guia;
+import model.entity.anexo.Anexo;
+import model.entity.enums.Siglas;
+
+public class GuiaService {
+
+	private SimplesNacionalService simplesNacionalService;
+
+<span class="fc" id="L18">	public GuiaService(SimplesNacionalService simplesNacionalService) {</span>
+<span class="fc" id="L19">		this.simplesNacionalService = simplesNacionalService;</span>
+<span class="fc" id="L20">	}</span>
+
+	public Guia calcularGuia(LocalDate mesReferente, Anexo anexo) throws FileNotFoundException {
+<span class="fc" id="L23">		simplesNacionalService.setMesReferente(mesReferente);</span>
+
+<span class="fc" id="L25">		Double faturamentoMensal = simplesNacionalService.getFaturamentoMensal();</span>
+<span class="fc" id="L26">		Double receitaBruta = simplesNacionalService.getReceitaBruta12Meses();</span>
+<span class="fc" id="L27">		Map&lt;Siglas, Double&gt; faixaAnexo = anexo.getFaixaFaturamento(simplesNacionalService.getFaixa());</span>
+
+<span class="fc" id="L29">		Double aliquotaImpost = (receitaBruta * (faixaAnexo.get(Siglas.ALIQ) / 100) - faixaAnexo.get(Siglas.VD))</span>
+<span class="fc" id="L30">				/ receitaBruta;</span>
+
+<span class="fc" id="L32">		Double valor = (aliquotaImpost * faturamentoMensal);</span>
+<span class="fc" id="L33">		LocalDate dataVencimento = LocalDate.of(mesReferente.getYear(), mesReferente.plusMonths(1).getMonth(), 20);</span>
+<span class="fc" id="L34">		Guia guia = new Guia(valor, dataVencimento, mesReferente);</span>
+
+<span class="fc" id="L36">		return guia;</span>
+	}
+
+	public List&lt;Guia&gt; calcularTodasGuias(Anexo anexo, LocalDate de, LocalDate ate) throws FileNotFoundException {
+
+<span class="fc" id="L41">		List&lt;Guia&gt; guias = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L42">		LocalDate mesReferente = de.minusMonths(1);</span>
+
+<span class="fc bfc" id="L44" title="All 2 branches covered.">		while (mesReferente.isBefore(ate)) {</span>
+			try {
+<span class="fc" id="L46">				mesReferente = mesReferente.plusMonths(1);</span>
+<span class="fc" id="L47">				Guia guia = calcularGuia(mesReferente, anexo);</span>
+<span class="pc bpc" id="L48" title="2 of 4 branches missed.">				if (guia.getValor() != 0.0 &amp;&amp; guia.getValor() != null)</span>
+<span class="fc" id="L49">					guias.add(guia);</span>
+<span class="pc" id="L50">			} catch (BusinessLogicException e) {</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">				if(e.getMessage().equals(BusinessLogicException.msgFaturamentoZerado))</span>
+<span class="nc" id="L52">					System.out.println(&quot;Nem uma nota cadastrada no periodo &quot; + mesReferente.getMonthValue() + &quot;/&quot; + mesReferente.getYear());</span>
+			}
+		}
+
+<span class="fc" id="L56">		return guias;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

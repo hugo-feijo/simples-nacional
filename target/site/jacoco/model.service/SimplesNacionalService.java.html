@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SimplesNacionalService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Simples Nacional</a> &gt; <a href="index.source.html" class="el_package">model.service</a> &gt; <span class="el_source">SimplesNacionalService.java</span></div><h1>SimplesNacionalService.java</h1><pre class="source lang-java linenums">package model.service;
+
+import java.io.FileNotFoundException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import exception.BusinessLogicException;
+import exception.FormatDataException;
+import model.entity.Nota;
+import model.entity.enums.FaixasFaturamento;
+import util.ReadCsvFile;
+
+public class SimplesNacionalService {//TODO: talvez refatorar esta classe separando uma entidade
+
+<span class="fc" id="L18">	private Double receitaBruta12Meses = 0.0;</span>
+<span class="fc" id="L19">	private Double faturamentoMensal = 0.0;</span>
+<span class="fc" id="L20">	private List&lt;Nota&gt; notasGeradas = new ArrayList&lt;&gt;();;</span>
+	private ReadCsvFile readCsv;
+	private LocalDate mesReferente;
+	private FaixasFaturamento faixa;
+	
+<span class="fc" id="L25">	public SimplesNacionalService(ReadCsvFile readCsv) throws FileNotFoundException {</span>
+<span class="fc" id="L26">		this.readCsv = readCsv;</span>
+<span class="fc" id="L27">		lerNotas();</span>
+<span class="fc" id="L28">	}</span>
+	
+	private void lerNotas() throws FileNotFoundException, FormatDataException {
+<span class="pc" id="L31">		Stream&lt;Nota&gt; sortedNota = readCsv.lerNotas().stream().sorted((a, b) -&gt; a.getDataEmissao().compareTo(b.getDataEmissao()));</span>
+<span class="fc" id="L32">		this.notasGeradas = sortedNota.collect(Collectors.toList());</span>
+<span class="fc" id="L33">	}</span>
+
+	public List&lt;Nota&gt; getNotasGeradas() {
+<span class="nc" id="L36">		return this.notasGeradas;</span>
+	}
+
+	public void setNotasGeradas(List&lt;Nota&gt; notasGeradas) {
+<span class="fc" id="L40">		this.notasGeradas = notasGeradas;</span>
+<span class="fc" id="L41">	}</span>
+
+	public Double getReceitaBruta12Meses() throws FileNotFoundException {
+<span class="fc" id="L44">		return calcularReceitaBruta();</span>
+	}
+
+	public void setReceitaBruta12Meses(Double receitaBruta12Meses) {
+<span class="nc" id="L48">		this.receitaBruta12Meses = receitaBruta12Meses;</span>
+<span class="nc" id="L49">	}</span>
+
+	public LocalDate getMesReferente() {
+<span class="nc" id="L52">		return mesReferente;</span>
+	}
+
+	public void setMesReferente(LocalDate mesReferente) {
+<span class="fc" id="L56">		this.mesReferente = mesReferente;// TODO: lançar exception se mês de referencia for nulo;</span>
+<span class="fc" id="L57">	}</span>
+
+	public Double getFaturamentoMensal() throws FileNotFoundException {
+<span class="fc" id="L60">		return calcularFaturamentoMensal();</span>
+	}
+
+	public void setFaturamentoMensal(Double faturamentoMensal) {
+<span class="nc" id="L64">		this.faturamentoMensal = faturamentoMensal;</span>
+<span class="nc" id="L65">	}</span>
+
+	public ReadCsvFile getReadCsv() {
+<span class="nc" id="L68">		return readCsv;</span>
+	}
+
+	public FaixasFaturamento getFaixa() throws FileNotFoundException {
+<span class="fc" id="L72">		return encontrarFaixa();</span>
+	}
+
+	private FaixasFaturamento encontrarFaixa() throws FileNotFoundException {
+<span class="fc" id="L76">		Double receitaBruta = calcularReceitaBruta();</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">		if(FaixasFaturamento.FAIXA_1_MIN.valor &lt;= receitaBruta &amp;&amp;</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">				receitaBruta &lt;= FaixasFaturamento.FAIXA_1_MAX.valor) {</span>
+<span class="fc" id="L79">			faixa = FaixasFaturamento.FAIXA_1;</span>
+		}
+<span class="fc bfc" id="L81" title="All 2 branches covered.">		if(FaixasFaturamento.FAIXA_2_MIN.valor &lt;= receitaBruta &amp;&amp;</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">				receitaBruta &lt;= FaixasFaturamento.FAIXA_2_MAX.valor) {</span>
+<span class="fc" id="L83">			faixa = FaixasFaturamento.FAIXA_2;</span>
+		}
+<span class="fc bfc" id="L85" title="All 2 branches covered.">		if(FaixasFaturamento.FAIXA_3_MIN.valor &lt;= receitaBruta &amp;&amp;</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">				receitaBruta &lt;= FaixasFaturamento.FAIXA_3_MAX.valor) {</span>
+<span class="fc" id="L87">			faixa = FaixasFaturamento.FAIXA_3;</span>
+		}
+<span class="fc bfc" id="L89" title="All 2 branches covered.">		if(FaixasFaturamento.FAIXA_4_MIN.valor &lt;= receitaBruta &amp;&amp;</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">				receitaBruta &lt;= FaixasFaturamento.FAIXA_4_MAX.valor) {</span>
+<span class="fc" id="L91">			faixa = FaixasFaturamento.FAIXA_4;</span>
+		}
+<span class="fc bfc" id="L93" title="All 2 branches covered.">		if(FaixasFaturamento.FAIXA_5_MIN.valor &lt;= receitaBruta &amp;&amp;</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">				receitaBruta &lt;= FaixasFaturamento.FAIXA_5_MAX.valor) {</span>
+<span class="fc" id="L95">			faixa = FaixasFaturamento.FAIXA_5;</span>
+		}
+<span class="fc bfc" id="L97" title="All 2 branches covered.">		if(FaixasFaturamento.FAIXA_6_MIN.valor &lt;= receitaBruta &amp;&amp;</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">				receitaBruta &lt;= FaixasFaturamento.FAIXA_6_MAX.valor) {</span>
+<span class="fc" id="L99">			faixa = FaixasFaturamento.FAIXA_6;</span>
+		}
+		
+<span class="fc" id="L102">		return faixa;</span>
+	}
+
+	public Double calcularReceitaBruta() throws FileNotFoundException {
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		if(mesReferente == null) throw new BusinessLogicException(BusinessLogicException.msgMesReferenteNaoInformado);</span>
+
+<span class="fc" id="L108">		LocalDate antesDe = mesReferente.minusDays(mesReferente.getDayOfMonth());</span>
+<span class="fc" id="L109">		LocalDate depoisDe = mesReferente.minusMonths(12).minusDays(mesReferente.getDayOfMonth() - 1 );</span>
+		
+<span class="fc" id="L111">		notasGeradas.forEach(notas -&gt; {</span>
+<span class="fc bfc" id="L112" title="All 4 branches covered.">			if(notas.getDataEmissao().isBefore(antesDe) &amp;&amp; notas.getDataEmissao().isAfter(depoisDe)) {</span>
+<span class="fc" id="L113">				receitaBruta12Meses += notas.getValor();</span>
+			}
+<span class="fc" id="L115">		});</span>
+		
+		
+<span class="fc" id="L118">		return receitaBruta12Meses;</span>
+		
+	}
+	
+	public Double calcularFaturamentoMensal() throws FileNotFoundException {
+<span class="fc" id="L123">		notasGeradas.forEach(notas -&gt; {</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">			if(notas.getDataEmissao().getMonth() == mesReferente.getMonth() &amp;&amp; </span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">					notas.getDataEmissao().getYear() == mesReferente.getYear()) {</span>
+<span class="fc" id="L126">				faturamentoMensal += notas.getValor();</span>
+			}
+<span class="fc" id="L128">		});</span>
+		
+<span class="fc bfc" id="L130" title="All 2 branches covered.">		if(faturamentoMensal == 0.0) {</span>
+<span class="fc" id="L131">			throw new BusinessLogicException(BusinessLogicException.msgFaturamentoZerado);</span>
+		}
+<span class="fc" id="L133">		return faturamentoMensal;</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

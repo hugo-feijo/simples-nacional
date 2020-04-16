@@ -121,7 +121,7 @@ public class ReadCsvFile {
 	public Double parseStringToDouble(String text) {
 		Double valor;
 		
-		if (text.isBlank() || text.isBlank() || text == null) {
+		if (text.isBlank() || text == null) {
 			throw new FormatDataException(FormatDataException.msgValorNaoInformado);
 		} else {
 			text = text.replace(".", "");

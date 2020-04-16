@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ShowDataView.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Simples Nacional</a> &gt; <a href="index.source.html" class="el_package">view</a> &gt; <span class="el_source">ShowDataView.java</span></div><h1>ShowDataView.java</h1><pre class="source lang-java linenums">package view;
+
+import java.util.List;
+import java.util.Scanner;
+
+import model.entity.Guia;
+import model.entity.Nota;
+
+<span class="nc" id="L9">public class ShowDataView {</span>
+
+<span class="nc" id="L11">	Scanner sc = new Scanner(System.in);</span>
+
+	@SuppressWarnings(&quot;unused&quot;)
+	public void fecharView() {
+		String opcao;
+<span class="nc" id="L16">		System.out.println(&quot;&quot;);</span>
+<span class="nc" id="L17">		System.out.println(&quot;-------OPÇOES-------&quot;);</span>
+<span class="nc" id="L18">		System.out.println(&quot;Selecione uma das opções: &quot;);</span>
+<span class="nc" id="L19">		System.out.println(&quot;[1] - Voltar ao menu.&quot;);</span>
+<span class="nc" id="L20">		System.out.print(&quot;Insira um opção: &quot;);</span>
+
+<span class="nc" id="L22">		opcao = sc.nextLine();</span>
+<span class="nc" id="L23">		clearConsole();</span>
+<span class="nc" id="L24">	}</span>
+	
+	public void clearConsole() {
+<span class="nc bnc" id="L27" title="All 2 branches missed.">		for (int i = 0; i &lt; 50; ++i)</span>
+<span class="nc" id="L28">			System.out.println();</span>
+<span class="nc" id="L29">	}</span>
+
+	public void exibirNotas(List&lt;Nota&gt; notas) {
+<span class="nc" id="L32">		notas.forEach(nota -&gt; {</span>
+<span class="nc" id="L33">			System.out.println(nota.toString());</span>
+<span class="nc" id="L34">		});</span>
+
+<span class="nc" id="L36">		fecharView();</span>
+<span class="nc" id="L37">	}</span>
+
+	public void exibirGuias(List&lt;Guia&gt; guias) {
+<span class="nc" id="L40">		System.out.println(&quot;&quot;);</span>
+<span class="nc" id="L41">		guias.forEach(guia -&gt; System.out.println(guia.toString()));</span>
+
+<span class="nc" id="L43">		fecharView();</span>
+<span class="nc" id="L44">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

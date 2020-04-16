@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReadCsvFile.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Simples Nacional</a> &gt; <a href="index.source.html" class="el_package">util</a> &gt; <span class="el_source">ReadCsvFile.java</span></div><h1>ReadCsvFile.java</h1><pre class="source lang-java linenums">package util;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
+
+import exception.FormatDataException;
+import model.entity.Nota;
+import model.entity.anexo.Anexo;
+import model.entity.enums.Siglas;
+
+<span class="fc" id="L20">public class ReadCsvFile {</span>
+
+	String first;
+<span class="fc" id="L23">	public Path pathNotas = Paths.get(&quot;src/main/resources/notas-geradas.csv&quot;);</span>
+<span class="fc" id="L24">	public Path pathAnexoI = Paths.get(&quot;src/main/resources/anexo-I.csv&quot;);</span>
+<span class="fc" id="L25">	public Path pathAnexoII = Paths.get(&quot;src/main/resources/anexo-II.csv&quot;);</span>
+<span class="fc" id="L26">	public Path pathAnexoIII = Paths.get(&quot;src/main/resources/anexo-III.csv&quot;);</span>
+<span class="fc" id="L27">	public Path pathAnexoIV = Paths.get(&quot;src/main/resources/anexo-IV.csv&quot;);</span>
+<span class="fc" id="L28">	public Path pathAnexoV = Paths.get(&quot;src/main/resources/anexo-V.csv&quot;);</span>
+<span class="fc" id="L29">	public Path pathAnexoVI = Paths.get(&quot;src/main/resources/anexo-VI.csv&quot;);</span>
+
+	public List&lt;Nota&gt; lerNotas() throws FileNotFoundException{
+<span class="fc" id="L32">		List&lt;Nota&gt; notas = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L33">		BufferedReader br = new BufferedReader(new FileReader(pathNotas.toString()));</span>
+		try{
+<span class="fc" id="L35">			parseDataCsvToNota(br, notas);</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">			if(notas.isEmpty())</span>
+<span class="fc" id="L37">				throw new FormatDataException(FormatDataException.msgArquivoVazio);</span>
+<span class="nc" id="L38">		} catch (IOException e) {</span>
+<span class="nc" id="L39">			e.printStackTrace();</span>
+		} 
+
+<span class="fc" id="L42">		return notas;</span>
+	}
+
+	public void setAnexo(Path path, Anexo anexos) throws FileNotFoundException {
+<span class="fc" id="L46">		BufferedReader bufferedReader = new BufferedReader(new FileReader(path.toString()));</span>
+		try {
+<span class="fc" id="L48">			parseDataCsvToAnexo(bufferedReader, anexos);</span>
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">			if(!anexos.faixa_1.containsKey(Siglas.ALIQ)) </span>
+<span class="nc" id="L50">				throw new FormatDataException(FormatDataException.msgArquivoVazio);</span>
+
+<span class="nc" id="L52">		} catch (IOException e) {</span>
+<span class="nc" id="L53">			e.printStackTrace();</span>
+		}
+<span class="fc" id="L55">	}</span>
+
+	public void parseDataCsvToAnexo(BufferedReader br, Anexo anexos) throws IOException {
+<span class="fc" id="L58">		String line = &quot;&quot;;</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">		while ((line = br.readLine()) != null) {</span>
+<span class="fc" id="L60">			String[] linhas = line.split(&quot;;&quot;);</span>
+<span class="fc" id="L61">			Double valorDeducao = parseStringToDouble(linhas[2]);</span>
+			
+<span class="fc bfc" id="L63" title="All 2 branches covered.">			if(linhas[0].contains(&quot;1&quot;)) {</span>
+<span class="fc" id="L64">				anexos.faixa_1.put(Siglas.ALIQ, Double.parseDouble(linhas[1]));</span>
+<span class="fc" id="L65">				anexos.faixa_1.put(Siglas.VD, valorDeducao);</span>
+			}
+
+<span class="fc bfc" id="L68" title="All 2 branches covered.">			if(linhas[0].contains(&quot;2&quot;)) {</span>
+<span class="fc" id="L69">				anexos.faixa_2.put(Siglas.ALIQ, Double.parseDouble(linhas[1]));</span>
+<span class="fc" id="L70">				anexos.faixa_2.put(Siglas.VD, valorDeducao);</span>
+			}
+
+<span class="fc bfc" id="L73" title="All 2 branches covered.">			if(linhas[0].contains(&quot;3&quot;)) {</span>
+<span class="fc" id="L74">				anexos.faixa_3.put(Siglas.ALIQ, Double.parseDouble(linhas[1]));</span>
+<span class="fc" id="L75">				anexos.faixa_3.put(Siglas.VD, valorDeducao);</span>
+			}
+
+<span class="fc bfc" id="L78" title="All 2 branches covered.">			if(linhas[0].contains(&quot;4&quot;)) {</span>
+<span class="fc" id="L79">				anexos.faixa_4.put(Siglas.ALIQ, Double.parseDouble(linhas[1]));</span>
+<span class="fc" id="L80">				anexos.faixa_4.put(Siglas.VD, valorDeducao);</span>
+			}
+
+<span class="fc bfc" id="L83" title="All 2 branches covered.">			if(linhas[0].contains(&quot;5&quot;)) {</span>
+<span class="fc" id="L84">				anexos.faixa_5.put(Siglas.ALIQ, Double.parseDouble(linhas[1]));</span>
+<span class="fc" id="L85">				anexos.faixa_5.put(Siglas.VD, valorDeducao);</span>
+			}
+			
+<span class="fc bfc" id="L88" title="All 2 branches covered.">			if(linhas[0].contains(&quot;6&quot;)) {</span>
+<span class="fc" id="L89">				anexos.faixa_6.put(Siglas.ALIQ, Double.parseDouble(linhas[1]));</span>
+<span class="fc" id="L90">				anexos.faixa_6.put(Siglas.VD, valorDeducao);</span>
+			}
+			
+		}
+
+<span class="fc" id="L95">	}</span>
+
+	public void parseDataCsvToNota(BufferedReader br, List&lt;Nota&gt; notas) throws IOException {
+<span class="fc" id="L98">		String line = &quot;&quot;;</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">		while ((line = br.readLine()) != null) {</span>
+<span class="fc" id="L100">			String[] notasLidas = line.split(&quot;;&quot;);</span>
+
+
+			Double valor;
+			LocalDate data;
+			try {
+<span class="fc" id="L106">				valor = parseStringToDouble(notasLidas[0]);</span>
+
+<span class="fc" id="L108">				data = LocalDate.parse(notasLidas[1], DateTimeFormatter.ofPattern(&quot;dd/MM/yyyy&quot;));</span>
+<span class="fc" id="L109">				notas.add(new Nota(valor, data));</span>
+
+<span class="fc" id="L111">			} catch (NumberFormatException e) {</span>
+<span class="fc" id="L112">				throw new FormatDataException(FormatDataException.msgValorInvalido);</span>
+<span class="fc" id="L113">			} catch (DateTimeParseException e) {</span>
+<span class="fc" id="L114">				throw new FormatDataException(FormatDataException.msgDataInvalida);</span>
+			}
+
+		}
+
+<span class="fc" id="L119">	}</span>
+
+	public Double parseStringToDouble(String text) {
+		Double valor;
+		
+<span class="pc bpc" id="L124" title="1 of 4 branches missed.">		if (text.isBlank() || text == null) {</span>
+<span class="fc" id="L125">			throw new FormatDataException(FormatDataException.msgValorNaoInformado);</span>
+		} else {
+<span class="fc" id="L127">			text = text.replace(&quot;.&quot;, &quot;&quot;);</span>
+<span class="fc" id="L128">			text = text.replace(&quot;,&quot;, &quot;.&quot;);</span>
+		}
+		
+<span class="fc bfc" id="L131" title="All 2 branches covered.">		if (text.contains(&quot;R$&quot;)) {</span>
+<span class="fc" id="L132">			text = text.replace(&quot;R$&quot;, &quot;&quot;);</span>
+<span class="fc" id="L133">			text = text.replaceAll(&quot; &quot;, &quot;&quot;);</span>
+<span class="fc" id="L134">			valor = Double.valueOf(text);</span>
+<span class="fc" id="L135">		} else {</span>
+<span class="fc" id="L136">			throw new NumberFormatException();</span>
+		}
+		
+<span class="fc" id="L139">		return valor;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
