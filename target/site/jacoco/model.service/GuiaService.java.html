@@ -47,10 +47,10 @@ public class GuiaService {
 <span class="fc" id="L47">				Guia guia = calcularGuia(mesReferente, anexo);</span>
 <span class="pc bpc" id="L48" title="2 of 4 branches missed.">				if (guia.getValor() != 0.0 &amp;&amp; guia.getValor() != null)</span>
 <span class="fc" id="L49">					guias.add(guia);</span>
-<span class="pc" id="L50">			} catch (BusinessLogicException e) {</span>
+<span class="nc" id="L50">			} catch (BusinessLogicException e) {</span>
 <span class="nc bnc" id="L51" title="All 2 branches missed.">				if(e.getMessage().equals(BusinessLogicException.msgFaturamentoZerado))</span>
 <span class="nc" id="L52">					System.out.println(&quot;Nem uma nota cadastrada no periodo &quot; + mesReferente.getMonthValue() + &quot;/&quot; + mesReferente.getYear());</span>
-			}
+<span class="pc" id="L53">			}</span>
 		}
 
 <span class="fc" id="L56">		return guias;</span>

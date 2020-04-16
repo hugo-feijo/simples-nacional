@@ -25,8 +25,8 @@ public class MainController {
 	private SimplesNacionalService simplesService;
 	private GuiaService guiaService;
 
-<span class="fc" id="L28">	public MainController(MainView mainView, ShowDataView showData, SimplesNacionalService simplesService,</span>
-			GuiaService guiaService) {
+	public MainController(MainView mainView, ShowDataView showData, SimplesNacionalService simplesService,
+<span class="fc" id="L29">			GuiaService guiaService) {</span>
 <span class="fc" id="L30">		this.mainView = mainView;</span>
 <span class="fc" id="L31">		this.showData = showData;</span>
 <span class="fc" id="L32">		this.simplesService = simplesService;</span>
@@ -36,18 +36,18 @@ public class MainController {
 	public void start() {
 		try {
 <span class="fc" id="L38">			application();</span>
-<span class="pc" id="L39">		} catch (BusinessLogicException | FileNotFoundException | ViewException e) {</span>
+<span class="nc" id="L39">		} catch (BusinessLogicException | FileNotFoundException | ViewException e) {</span>
 <span class="nc" id="L40">			System.out.println(&quot;*********&quot;);</span>
 <span class="nc" id="L41">			System.out.printf(&quot;Erro: %s\n&quot;, e.getMessage());</span>
 <span class="nc" id="L42">			System.out.println(&quot;*********&quot;);</span>
-		}
+<span class="fc" id="L43">		}</span>
 <span class="fc" id="L44">	}</span>
 
 	public void application() throws FileNotFoundException {
 <span class="fc" id="L47">		String opcao = &quot;&quot;;</span>
 <span class="fc bfc" id="L48" title="All 2 branches covered.">		while (opcao != null) {</span>
 <span class="fc" id="L49">			opcao = mainView.exibirMenu();</span>
-<span class="fc bfc" id="L50" title="All 5 branches covered.">			switch (opcao) {</span>
+<span class="pc bpc" id="L50" title="1 of 5 branches missed.">			switch (opcao) {</span>
 			case &quot;1&quot;:
 <span class="fc" id="L52">				printGuia();</span>
 <span class="fc" id="L53">				break;</span>
@@ -68,7 +68,7 @@ public class MainController {
 				
 			default:
 <span class="fc" id="L70">				System.out.println(&quot;Opção invalida&quot;);</span>
-				break;
+<span class="fc" id="L71">				break;</span>
 			}
 		}
 <span class="fc" id="L74">	}</span>

@@ -37,7 +37,7 @@ import model.entity.enums.Siglas;
 <span class="fc" id="L37">				throw new FormatDataException(FormatDataException.msgArquivoVazio);</span>
 <span class="nc" id="L38">		} catch (IOException e) {</span>
 <span class="nc" id="L39">			e.printStackTrace();</span>
-		} 
+<span class="fc" id="L40">		} </span>
 
 <span class="fc" id="L42">		return notas;</span>
 	}
@@ -51,7 +51,7 @@ import model.entity.enums.Siglas;
 
 <span class="nc" id="L52">		} catch (IOException e) {</span>
 <span class="nc" id="L53">			e.printStackTrace();</span>
-		}
+<span class="fc" id="L54">		}</span>
 <span class="fc" id="L55">	}</span>
 
 	public void parseDataCsvToAnexo(BufferedReader br, Anexo anexos) throws IOException {
@@ -90,7 +90,7 @@ import model.entity.enums.Siglas;
 <span class="fc" id="L90">				anexos.faixa_6.put(Siglas.VD, valorDeducao);</span>
 			}
 			
-		}
+<span class="fc" id="L93">		}</span>
 
 <span class="fc" id="L95">	}</span>
 
@@ -112,9 +112,9 @@ import model.entity.enums.Siglas;
 <span class="fc" id="L112">				throw new FormatDataException(FormatDataException.msgValorInvalido);</span>
 <span class="fc" id="L113">			} catch (DateTimeParseException e) {</span>
 <span class="fc" id="L114">				throw new FormatDataException(FormatDataException.msgDataInvalida);</span>
-			}
+<span class="fc" id="L115">			}</span>
 
-		}
+<span class="fc" id="L117">		}</span>
 
 <span class="fc" id="L119">	}</span>
 
@@ -132,7 +132,7 @@ import model.entity.enums.Siglas;
 <span class="fc" id="L132">			text = text.replace(&quot;R$&quot;, &quot;&quot;);</span>
 <span class="fc" id="L133">			text = text.replaceAll(&quot; &quot;, &quot;&quot;);</span>
 <span class="fc" id="L134">			valor = Double.valueOf(text);</span>
-<span class="fc" id="L135">		} else {</span>
+		} else {
 <span class="fc" id="L136">			throw new NumberFormatException();</span>
 		}
 		
