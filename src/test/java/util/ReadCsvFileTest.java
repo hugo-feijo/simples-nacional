@@ -1,6 +1,7 @@
 package util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,6 +20,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -39,11 +41,11 @@ class ReadCsvFileTest {
 	@Mock
 	private BufferedReader bufferedReader;
 	
+	@InjectMocks
 	private ReadCsvFile inTest;
 	
 	@BeforeEach
 	void setUp() {
-		inTest = new ReadCsvFile();
 	}
 	
 	@Nested
@@ -53,21 +55,45 @@ class ReadCsvFileTest {
 		private List<Nota> notas = new ArrayList<>();
 		
 		@Test
+		@DisplayName("tratar um exceção IOException na leitura das notas")
+		void test_tratamentoIOExceptionNaNota() throws IOException {
+			when(bufferedReader.readLine()).thenThrow(new IOException());
+			
+			assertFalse(inTest.parseDataCsvToNota(bufferedReader, null));
+		}
+
+		@Test
+		@DisplayName("tratar um exceção IOException na leitura dos anexos")
+		void test_tratamentoIOExceptionNoAnexo() throws IOException {
+			when(bufferedReader.readLine()).thenThrow(new IOException());
+			
+			assertFalse(inTest.parseDataCsvToAnexo(bufferedReader, null));
+		}
+		
+		@Test
 		@DisplayName("se arquivo não existe")
 		void deveriaJogarExceçãoSeArquivoNaoExiste() {
 			inTest.pathNotas = Paths.get("/arquivo-inextente.csv");
 			
 			assertThrows(FileNotFoundException.class, () -> inTest.lerNotas());
-			assertThrows(FileNotFoundException.class, () -> inTest.setAnexo(inTest.pathNotas, new Anexo()));
+			assertThrows(FileNotFoundException.class, () -> inTest.setAnexo(inTest.pathNotas, new Anexo(inTest)));
 		}
 		
 		@Test
-		@DisplayName("se arquivo estiver vazio")
-		void test_arquivoVazio() {
+		@DisplayName("se arquivo nota estiver vazio")
+		void test_arquivoNotaVazio() {
 			inTest.pathNotas = Paths.get("src/test/resources/notas-vazia.csv");
 			
 			FormatDataException exception = assertThrows(FormatDataException.class, () -> inTest.lerNotas());
-			assertEquals(FormatDataException.msgArquivoVazio, exception.getMessage());
+			assertEquals(FormatDataException.msgArquivoNotasVazio, exception.getMessage());
+		}
+
+		@Test
+		@DisplayName("se arquivo anexo estiver vazio")
+		void test_arquivoAnexoVazio() throws FileNotFoundException {
+			inTest.pathAnexoI = Paths.get("src/test/resources/anexo-I-vazio.csv");
+			FormatDataException exception = assertThrows(FormatDataException.class, () -> new Anexo_I(inTest));
+			assertEquals(FormatDataException.msgArquivoAnexoVazio, exception.getMessage());
 		}
 		
 		@Nested
@@ -155,7 +181,7 @@ class ReadCsvFileTest {
 		@Test
 		@DisplayName("anexo I")
 		void test_anexoI() throws FileNotFoundException {
-			Anexo anexoI = new Anexo_I();
+			Anexo anexoI = new Anexo_I(inTest);
 			assertEquals(4.00, anexoI.faixa_1.get(Siglas.ALIQ));
 			assertEquals(7.30, anexoI.faixa_2.get(Siglas.ALIQ));
 			assertEquals(9.50, anexoI.faixa_3.get(Siglas.ALIQ));
@@ -175,7 +201,7 @@ class ReadCsvFileTest {
 		@Test
 		@DisplayName("anexo II")
 		void test_anexoII() throws FileNotFoundException {
-			Anexo anexoII = new Anexo_II();
+			Anexo anexoII = new Anexo_II(inTest);
 			assertEquals(4.50, anexoII.faixa_1.get(Siglas.ALIQ));
 			assertEquals(7.80, anexoII.faixa_2.get(Siglas.ALIQ));
 			assertEquals(10.00, anexoII.faixa_3.get(Siglas.ALIQ));
@@ -195,7 +221,7 @@ class ReadCsvFileTest {
 		@Test
 		@DisplayName("anexo III")
 		void test_anexoIII() throws FileNotFoundException {
-			Anexo anexoIII = new Anexo_III();
+			Anexo anexoIII = new Anexo_III(inTest);
 			assertEquals(6.00, anexoIII.faixa_1.get(Siglas.ALIQ));
 			assertEquals(11.20, anexoIII.faixa_2.get(Siglas.ALIQ));
 			assertEquals(13.50, anexoIII.faixa_3.get(Siglas.ALIQ));
@@ -215,7 +241,7 @@ class ReadCsvFileTest {
 		@Test
 		@DisplayName("anexo IV")
 		void test_anexoIV() throws FileNotFoundException {
-			Anexo anexoIV = new Anexo_IV();
+			Anexo anexoIV = new Anexo_IV(inTest);
 			assertEquals(4.50, anexoIV.faixa_1.get(Siglas.ALIQ));
 			assertEquals(9.00, anexoIV.faixa_2.get(Siglas.ALIQ));
 			assertEquals(10.20, anexoIV.faixa_3.get(Siglas.ALIQ));
@@ -234,7 +260,7 @@ class ReadCsvFileTest {
 		@Test
 		@DisplayName("anexo V")
 		void test_anexoV() throws FileNotFoundException {
-			Anexo anexoV = new Anexo_V();
+			Anexo anexoV = new Anexo_V(inTest);
 			assertEquals(15.50, anexoV.faixa_1.get(Siglas.ALIQ));
 			assertEquals(18.00, anexoV.faixa_2.get(Siglas.ALIQ));
 			assertEquals(19.50, anexoV.faixa_3.get(Siglas.ALIQ));

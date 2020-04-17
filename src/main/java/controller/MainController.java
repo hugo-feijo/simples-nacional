@@ -8,11 +8,6 @@ import exception.BusinessLogicException;
 import exception.ViewException;
 import model.entity.Guia;
 import model.entity.anexo.Anexo;
-import model.entity.anexo.Anexo_I;
-import model.entity.anexo.Anexo_II;
-import model.entity.anexo.Anexo_III;
-import model.entity.anexo.Anexo_IV;
-import model.entity.anexo.Anexo_V;
 import model.service.GuiaService;
 import model.service.SimplesNacionalService;
 import view.MainView;
@@ -103,27 +98,7 @@ public class MainController {
 
 	private Anexo getAnexoOfString() throws FileNotFoundException {
 		String txtAnexo = mainView.getAnexo();
-		Anexo anexoFinal = new Anexo();
-
-		switch (txtAnexo) {
-		case "1":
-			anexoFinal = new Anexo_I();
-			break;
-		case "2":
-			anexoFinal = new Anexo_II();
-			break;
-		case "3":
-			anexoFinal = new Anexo_III();
-			break;
-		case "4":
-			anexoFinal = new Anexo_IV();
-			break;
-		case "5":
-			anexoFinal = new Anexo_V();
-			break;
-		default:
-			throw new ViewException(ViewException.msgAnexoInvalido);
-		}
+		Anexo anexoFinal = guiaService.findAnexo(txtAnexo);
 
 		return anexoFinal;
 	}

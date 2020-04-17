@@ -6,11 +6,10 @@ import util.ReadCsvFile;
 
 public class Anexo_III extends Anexo {
 
-	private ReadCsvFile readCsv = new ReadCsvFile();
 	
-	public  Anexo_III() throws FileNotFoundException {
-		super();
-		readCsv.setAnexo(readCsv.pathAnexoIII, this);
+	public  Anexo_III(ReadCsvFile readCsv) throws FileNotFoundException {
+		super(readCsv);
+		getReadCsv().setAnexo(getReadCsv().pathAnexoIII, this);
 		
 	}
 	

@@ -8,7 +8,8 @@ public class FormatDataException extends RuntimeException{
 	public static String msgValorInvalido = "Formato de valor invalido, deveria ser R$ 0.000,00; Por gentilza verifique o arquivo notas-geradas.csv.";
 	public static String msgValorNaoInformado = "Não foi encontrado o valor de uma das notas. Por gentileza verifique o arquivo notas-geradas.csv.";
 
-	public static String msgArquivoVazio = "O arquivo notas-geradas.csv está vazio.";
+	public static String msgArquivoNotasVazio = "O arquivo notas-geradas.csv está vazio.";
+	public static String msgArquivoAnexoVazio = "O arquivo Anexo-*.csv está vazio.";
 
 	
 	public FormatDataException(String msg) {

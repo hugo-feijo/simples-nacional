@@ -20,8 +20,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import model.entity.Guia;
 import model.entity.anexo.Anexo;
+import model.entity.anexo.Anexo_I;
 import model.service.GuiaService;
 import model.service.SimplesNacionalService;
+import util.ReadCsvFile;
 import view.MainView;
 import view.ShowDataView;
 
@@ -53,6 +55,7 @@ class MainControllerTest {
 	void test_printGuiaUnica() throws FileNotFoundException {
 		LocalDate mesReferente = LocalDate.of(2020, 04, 01);
 		Guia guia = new Guia(100.00, LocalDate.of(2020, 04, 20), LocalDate.of(2020, 03, 01));
+		Anexo anexo = new Anexo_I(new ReadCsvFile());
 		
 		ArrayList<String> periodo = new ArrayList<>();
 		periodo.add("01/2019");
@@ -62,6 +65,7 @@ class MainControllerTest {
 		
 		when(mainView.getMesReferente()).thenReturn("04/2020");
 		when(mainView.getAnexo()).thenReturn("1");
+		when(guiaService.findAnexo("1")).thenReturn(anexo);
 		when(guiaService.calcularGuia(eq(mesReferente), any(Anexo.class))).thenReturn(guia);
 		
 		when(mainView.getPeriodo()).thenReturn(periodo);

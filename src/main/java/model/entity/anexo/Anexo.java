@@ -5,9 +5,12 @@ import java.util.Map;
 
 import model.entity.enums.FaixasFaturamento;
 import model.entity.enums.Siglas;
+import util.ReadCsvFile;
 
 public class Anexo {
 
+	private ReadCsvFile readCsv;
+	
 	public Map<Siglas, Double> faixa_1 = new HashMap<>();
 	public Map<Siglas, Double> faixa_2 = new HashMap<>();
 	public Map<Siglas, Double> faixa_3 = new HashMap<>();
@@ -15,8 +18,9 @@ public class Anexo {
 	public Map<Siglas, Double> faixa_5 = new HashMap<>();
 	public Map<Siglas, Double> faixa_6 = new HashMap<>();
 	
-	public Anexo() {
+	public Anexo(ReadCsvFile readCsv) {
 		setFaturamentoMinMax();
+		this.readCsv = readCsv;
 	}
 	
 	public void setFaturamentoMinMax() {
@@ -79,6 +83,14 @@ public class Anexo {
 
 	public Map<Siglas, Double> getFaixa_6() {
 		return faixa_6;
+	}
+
+	public ReadCsvFile getReadCsv() {
+		return readCsv;
+	}
+
+	public void setReadCsv(ReadCsvFile readCsv) {
+		this.readCsv = readCsv;
 	}
 	
 }

@@ -7,16 +7,25 @@ import java.util.List;
 import java.util.Map;
 
 import exception.BusinessLogicException;
+import exception.ViewException;
 import model.entity.Guia;
 import model.entity.anexo.Anexo;
+import model.entity.anexo.Anexo_I;
+import model.entity.anexo.Anexo_II;
+import model.entity.anexo.Anexo_III;
+import model.entity.anexo.Anexo_IV;
+import model.entity.anexo.Anexo_V;
 import model.entity.enums.Siglas;
+import util.ReadCsvFile;
 
 public class GuiaService {
 
 	private SimplesNacionalService simplesNacionalService;
-
+	private ReadCsvFile readCsv; 
+	
 	public GuiaService(SimplesNacionalService simplesNacionalService) {
 		this.simplesNacionalService = simplesNacionalService;
+		this.readCsv = simplesNacionalService.getReadCsv();
 	}
 
 	public Guia calcularGuia(LocalDate mesReferente, Anexo anexo) throws FileNotFoundException {
@@ -56,4 +65,39 @@ public class GuiaService {
 		return guias;
 	}
 
+	public Anexo findAnexo(String txtAnexo) throws FileNotFoundException {
+		Anexo anexo = new Anexo(this.readCsv);
+
+		switch (txtAnexo) {
+		case "1":
+			anexo = new Anexo_I(this.readCsv);
+			break;
+		case "2":
+			anexo = new Anexo_II(this.readCsv);
+			break;
+		case "3":
+			anexo = new Anexo_III(this.readCsv);
+			break;
+		case "4":
+			anexo = new Anexo_IV(this.readCsv);
+			break;
+		case "5":
+			anexo = new Anexo_V(this.readCsv);
+			break;
+		default:
+			throw new ViewException(ViewException.msgAnexoInvalido);
+		}
+		
+		return anexo;
+	}
+
+	public ReadCsvFile getReadCsv() {
+		return readCsv;
+	}
+
+	public void setReadCsv(ReadCsvFile readCsv) {
+		this.readCsv = readCsv;
+	}
+
+	
 }
